@@ -12,6 +12,8 @@ pre-commit = "^3.7.0"
 docker = "^7.0.0"
 celery = "^5.4.0"
 sqlalchemy = "^2.0.29"
+psycopg2 = "^2.9.9"
+pyjwt = "^2.8.0"
 
 
 [build-system]
