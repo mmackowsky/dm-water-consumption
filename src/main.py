@@ -24,6 +24,22 @@ async def get_water_consumption_by_id(request: Request, water_consumption_id: in
     )
 
 
+@app.delete("/api/water/{water_consumption_id}", status_code=status.HTTP_200_OK)
+async def delete_measurement(water_consumption_id: int):
+    measurement = (
+        db.query(WaterConsumption)
+        .filter(WaterConsumption.id == water_consumption_id)
+        .first()
+    )
+    if not measurement:
+        raise HTTPException(
+            detail="Measurement not found", status_code=status.HTTP_404_NOT_FOUND
+        )
+    db.delete(measurement)
+    db.commit()
+    return {"message": "Measurement deleted"}
+
+
 if __name__ == "__main__":
     WaterConsumption.metadata.create_all(bind=engine)
     uvicorn.run(app, host=settings.SERVICE_HOST, port=settings.SERVICE_PORT)
