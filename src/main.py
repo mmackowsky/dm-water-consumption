@@ -25,7 +25,7 @@ async def get_water_consumption_by_id(request: Request, water_consumption_id: in
 
 
 @app.delete("/api/water/{water_consumption_id}", status_code=status.HTTP_200_OK)
-async def delete_measurement(water_consumption_id: int):
+async def delete_water_measurement(water_consumption_id: int):
     measurement = (
         db.query(WaterConsumption)
         .filter(WaterConsumption.id == water_consumption_id)
