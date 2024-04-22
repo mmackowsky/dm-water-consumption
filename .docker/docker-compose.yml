@@ -13,14 +13,8 @@ services:
       - .:/dm-water-consumption
     ports:
       - "8400:8400"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.001'
-          memory: 50M
-        reservations:
-          cpus: '0.0001'
-          memory: 20M
+
+
 
 networks:
   dm-water-consumption:
