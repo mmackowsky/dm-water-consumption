@@ -11,14 +11,17 @@ services:
       - .:/dm-water-consumption
     ports:
       - "8400:8400"
+    depends_on:
+      db-dm-water-consumption:
+        condition: service_healthy
 
   db-dm-water-consumption:
     container_name: db-dm-water-consumption
     image: postgres:15
     volumes:
-      - ./data/db-dm-energy-consumption:/var/lib/postgresql/data
+      - ./data/db-dm-water-consumption:/var/lib/postgresql/data
     env_file:
-      - .env
+      - ../.env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
