@@ -2,8 +2,6 @@ version: '3.9'
 
 services:
   dm-water-consumption:
-    networks:
-      - dm-water-consumption
     build:
       context: ../
       dockerfile: .docker/Dockerfile
@@ -14,7 +12,21 @@ services:
     ports:
       - "8400:8400"
 
-
-
-networks:
-  dm-water-consumption:
+  db-dm-water-consumption:
+    container_name: db-dm-water-consumption
+    image: postgres:15
+    volumes:
+      - ./data/db-dm-energy-consumption:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 30s
+      retries: 6
