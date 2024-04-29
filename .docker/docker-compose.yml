@@ -1,7 +1,5 @@
-version: '3.9'
-
 services:
-  dm-water-consumption:
+  app-dm-water-consumption:
     build:
       context: ../
       dockerfile: .docker/Dockerfile
@@ -9,6 +7,10 @@ services:
     container_name: dm-water-consumption
     volumes:
       - .:/dm-water-consumption
+    env_file:
+      - /.env
+    environment:
+      - DATABASE_URL=${SQLALCHEMY_DATABASE_URL}
     ports:
       - "8400:8400"
     depends_on:
@@ -16,18 +18,18 @@ services:
         condition: service_healthy
 
   db-dm-water-consumption:
-    container_name: db-dm-water-consumption
+    container_name: db-water-consumption
     image: postgres:15
     volumes:
       - ./data/db-dm-water-consumption:/var/lib/postgresql/data
     env_file:
-      - ../.env
+      - /.env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5434:5432"
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}" ]
       interval: 5s
