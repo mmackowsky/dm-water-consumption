@@ -17,6 +17,36 @@ services:
       db-dm-water-consumption:
         condition: service_healthy
 
+  app-celery:
+    build:
+      context: ../
+      dockerfile: .docker/Dockerfile
+    command: bash -c "cd src && poetry run celery -A worker worker --loglevel=INFO --without-gossip --without-mingle --without-heartbeat -Ofair --pool=solo"
+    container_name: dm-water-consumption_celery_worker
+    volumes:
+      - .:/dm-water-consumption
+    environment:
+      CELERY_BROKER_URL: "redis://dm-water-consumption_redis:6379/0"
+      CELERY_RESULT_BACKEND: "redis://dm-water-consumption_redis:6379/0"
+    depends_on:
+      - redis
+    healthcheck:
+      test: celery inspect ping
+      interval: 1m
+      timeout: 10s
+      retries: 10
+
+  redis:
+    image: "redis:latest"
+    container_name: dm-water-consumption_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 1m
+      timeout: 10s
+      retries: 10
+
   db-dm-water-consumption:
     container_name: db-water-consumption
     image: postgres:15
