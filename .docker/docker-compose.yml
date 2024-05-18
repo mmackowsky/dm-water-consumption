@@ -1,5 +1,7 @@
 services:
   app-dm-water-consumption:
+    networks:
+      - dm-water-consumption
     build:
       context: ../
       dockerfile: .docker/Dockerfile
@@ -18,6 +20,8 @@ services:
         condition: service_healthy
 
   app-celery:
+    networks:
+      - dm-water-consumption
     build:
       context: ../
       dockerfile: .docker/Dockerfile
@@ -37,6 +41,8 @@ services:
       retries: 10
 
   redis:
+    networks:
+      - dm-water-consumption
     image: "redis:latest"
     container_name: dm-water-consumption_redis
     ports:
@@ -48,6 +54,8 @@ services:
       retries: 10
 
   db-dm-water-consumption:
+    networks:
+      - dm-water-consumption
     container_name: db-water-consumption
     image: postgres:15
     volumes:
@@ -65,3 +73,6 @@ services:
       interval: 5s
       timeout: 30s
       retries: 6
+
+networks:
+  dm-water-consumption:
