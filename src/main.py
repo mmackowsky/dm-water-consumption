@@ -11,7 +11,7 @@ app = FastAPI()
 db = SessionLocal()
 
 
-@app.post("/api/energy/collect-data", status_code=status.HTTP_201_CREATED)
+@app.post("/api/water/collect-data", status_code=status.HTTP_201_CREATED)
 async def collect_data(request: Request):
     user_id = request.headers.get("request-user-id")
     data = periodic_task(user_id)
