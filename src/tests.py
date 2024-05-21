@@ -44,3 +44,21 @@ energy = WaterConsumption(
 db.add(energy)
 db.commit()
 db.refresh(energy)
+
+
+print(db.query(WaterConsumption).all())
+
+
+class TestEnergyAPI(unittest.TestCase):
+    def setUp(self):
+        self.client = TestClient(app)
+
+    def test_get_water_consumption(self):
+        response = self.client.get("/api/water")
+        print(response.json())
+        print(response.text)
+        print(response.status_code)
+
+
+if __name__ == "__main__":
+    unittest.main()
