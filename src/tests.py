@@ -59,7 +59,6 @@ class TestEnergyAPI(unittest.TestCase):
     def test_get_water_consumption(self):
         response = self.client.get("/api/water")
         print(response.json())
-        print(response.text)
         print(response.status_code)
 
     def test_get_water_consumptions(self):
