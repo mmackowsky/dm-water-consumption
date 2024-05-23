@@ -9,7 +9,7 @@ from sqlalchemy.pool import StaticPool
 from config import get_settings
 from database import Base, get_db
 from main import app
-from src.models import WaterConsumption
+from models import WaterConsumption
 
 settings = get_settings()
 
