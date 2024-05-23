@@ -53,7 +53,7 @@ jobs:
       run: |
         sudo systemctl start postgresql.service
         cd src
-        poetry run python manage.py test
+        poetry run python tests.py
       env:
         CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
         CELERY_TIMEZONE: ${{ secrets.CELERY_TIMEZONE }}
