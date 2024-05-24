@@ -57,8 +57,8 @@ class TestEnergyAPI(unittest.TestCase):
 
     def tearDown(self):
         db = TestingSessionLocal()
-        db.query(WaterConsumption).delete()
-        db.commit()
+        # db.query(WaterConsumption).delete()
+        # db.commit()
         db.close()
 
     def test_get_water_consumption(self):
