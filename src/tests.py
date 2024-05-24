@@ -13,7 +13,7 @@ from models import WaterConsumption
 
 settings = get_settings()
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/postgres"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
