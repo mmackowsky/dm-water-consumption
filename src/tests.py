@@ -15,16 +15,6 @@ settings = get_settings()
 
 SQLALCHEMY_DATABASE_URL = "sqlite://"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
-)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-Base.metadata.create_all(bind=engine)
-
 
 def override_get_db():
     try:
@@ -32,21 +22,6 @@ def override_get_db():
         yield db
     finally:
         db.close()
-
-
-app.dependency_overrides[get_db] = override_get_db
-
-client = TestClient(app)
-db = TestingSessionLocal()
-energy = WaterConsumption(
-    id=1,
-    user=1,
-    measurement_date=datetime.now().strftime("%Y-%m-%d"),
-    water_consumption=100,
-)
-db.add(energy)
-db.commit()
-db.refresh(energy)
 
 
 class TestEnergyAPI(unittest.TestCase):
@@ -81,5 +56,28 @@ class TestEnergyAPI(unittest.TestCase):
 #         self.assertEqual(response.status_code, 404)
 # #
 #
-# if __name__ == "__main__":
-unittest.main()
+if __name__ == "__main__":
+    app.dependency_overrides[get_db] = override_get_db
+
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+    Base.metadata.create_all(bind=engine)
+
+    client = TestClient(app)
+    db = TestingSessionLocal()
+    energy = WaterConsumption(
+        id=1,
+        user=1,
+        measurement_date=datetime.now().strftime("%Y-%m-%d"),
+        water_consumption=100,
+    )
+    db.add(energy)
+    db.commit()
+    db.refresh(energy)
+
+    unittest.main()
