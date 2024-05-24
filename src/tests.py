@@ -44,16 +44,16 @@ class TestEnergyAPI(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         db = TestingSessionLocal()
-        energy = WaterConsumption(
-            id=1,
-            user=1,
-            measurement_date=datetime.now().strftime("%Y-%m-%d"),
-            water_consumption=100,
-        )
-        db.add(energy)
-        db.commit()
-        db.refresh(energy)
-        db.close()
+        # energy = WaterConsumption(
+        #     id=1,
+        #     user=1,
+        #     measurement_date=datetime.now().strftime("%Y-%m-%d"),
+        #     water_consumption=100,
+        # )
+        # db.add(energy)
+        # db.commit()
+        # db.refresh(energy)
+        # db.close()
 
     def tearDown(self):
         db = TestingSessionLocal()
