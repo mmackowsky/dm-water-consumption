@@ -52,8 +52,6 @@ jobs:
     - name: Run Tests
       run: |
         sudo systemctl start postgresql.service
-        pg_isready
-        sudo -u postgres createuser -s -d -r -w runner
         cd src
         poetry run python tests.py
       env:
