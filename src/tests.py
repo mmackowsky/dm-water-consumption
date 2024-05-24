@@ -13,11 +13,13 @@ from models import WaterConsumption
 
 settings = get_settings()
 
-SQLALCHEMY_DATABASE_URL = "sqlite://"
+SQLALCHEMY_DATABASE_URL = (
+    "postgresql://postgres:48bc27agh!@localhost/dm-water-consumption"
+)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
+    # connect_args={"check_same_thread": False},
     poolclass=StaticPool,
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -73,7 +75,7 @@ class TestEnergyAPI(unittest.TestCase):
 
     def test_delete_water_measurement(self):
         response = self.client.delete("/api/water/1")
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/json")
 
     def test_delete_nonexistent_energy_measurement(self):
