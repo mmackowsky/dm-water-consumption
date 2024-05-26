@@ -5,10 +5,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
 
 from config import get_settings
-from database import get_db  # Base out
+from database import get_db
 from main import app
 from models import WaterConsumption
 
@@ -16,9 +15,7 @@ settings = get_settings()
 
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/postgres"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 Base = declarative_base()
 
@@ -26,8 +23,6 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 
 WaterConsumption.metadata.create_all(bind=engine)
-# print("Created:")
-# print(TestingSessionLocal().query(WaterConsumption).all())
 
 
 def override_get_db():
@@ -91,9 +86,6 @@ class TestEnergyAPI(unittest.TestCase):
     def test_delete_nonexistent_energy_measurement(self):
         response = self.client.delete("/api/energy/999")
         self.assertEqual(response.status_code, 404)
-
-
-# WaterConsumption.metadata.drop_all(bind=engine)
 
 
 if __name__ == "__main__":
