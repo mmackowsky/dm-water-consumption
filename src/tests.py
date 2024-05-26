@@ -25,9 +25,9 @@ Base = declarative_base()
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-WaterConsumption.metadata.create_all(bind=engine)
-print("Created:")
-print(TestingSessionLocal().query(WaterConsumption).all())
+# WaterConsumption.metadata.create_all(bind=engine)
+# print("Created:")
+# print(TestingSessionLocal().query(WaterConsumption).all())
 
 
 def override_get_db():
@@ -50,6 +50,7 @@ class TestEnergyAPI(unittest.TestCase):
 
     def setUp(self):
         self.client = TestClient(app)
+        WaterConsumption.metadata.create_all(bind=engine)
         db = TestingSessionLocal()
         energy = WaterConsumption(
             id=1,
@@ -66,6 +67,7 @@ class TestEnergyAPI(unittest.TestCase):
         db = TestingSessionLocal()
         db.query(WaterConsumption).delete()
         db.commit()
+        WaterConsumption.metadata.drop_all(bind=engine)
         db.close()
 
     def test_get_water_consumption(self):
