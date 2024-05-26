@@ -22,6 +22,8 @@ engine = create_engine(
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+Base.metadata.create_all(bind=engine)
+
 
 def override_get_db():
     try:
@@ -31,11 +33,14 @@ def override_get_db():
         db.close()
 
 
+app.dependency_overrides[get_db] = override_get_db
+
+
 class TestEnergyAPI(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        Base.metadata.create_all(bind=engine)
-        app.dependency_overrides[get_db] = override_get_db
+    # @classmethod
+    # def setUpClass(cls):
+    #     Base.metadata.create_all(bind=engine)
+    #     app.dependency_overrides[get_db] = override_get_db
 
     @classmethod
     def tearDownClass(cls):
