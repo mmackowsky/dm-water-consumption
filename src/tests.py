@@ -3,11 +3,12 @@ from datetime import datetime
 
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from config import get_settings
-from database import Base, get_db
+from database import get_db  # Base out
 from main import app
 from models import WaterConsumption
 
@@ -15,7 +16,14 @@ settings = get_settings()
 
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/postgres"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    # connect_args={"check_same_thread": False},
+    # poolclass=StaticPool,
+)
+
+Base = declarative_base()
+
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
