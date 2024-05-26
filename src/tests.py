@@ -15,11 +15,7 @@ settings = get_settings()
 
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/postgres"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
-)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
