@@ -25,7 +25,7 @@ Base = declarative_base()
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-# WaterConsumption.metadata.create_all(bind=engine)
+WaterConsumption.metadata.create_all(bind=engine)
 # print("Created:")
 # print(TestingSessionLocal().query(WaterConsumption).all())
 
