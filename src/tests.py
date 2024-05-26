@@ -27,6 +27,9 @@ Base = declarative_base()
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
+WaterConsumption.metadata.create_all(bind=engine)
+
+
 def override_get_db():
     try:
         db = TestingSessionLocal()
@@ -88,6 +91,9 @@ class TestEnergyAPI(unittest.TestCase):
     def test_delete_nonexistent_energy_measurement(self):
         response = self.client.delete("/api/energy/999")
         self.assertEqual(response.status_code, 404)
+
+
+# WaterConsumption.metadata.drop_all(bind=engine)
 
 
 if __name__ == "__main__":
