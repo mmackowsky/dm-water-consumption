@@ -13,7 +13,7 @@ from models import WaterConsumption
 
 settings = get_settings()
 
-SQLALCHEMY_DATABASE_URL = "sqlite://"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/postgres"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
@@ -21,8 +21,6 @@ engine = create_engine(
     poolclass=StaticPool,
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-Base.metadata.create_all(bind=engine)
 
 
 def override_get_db():
@@ -33,14 +31,11 @@ def override_get_db():
         db.close()
 
 
-app.dependency_overrides[get_db] = override_get_db
-
-
 class TestEnergyAPI(unittest.TestCase):
-    # @classmethod
-    # def setUpClass(cls):
-    #     Base.metadata.create_all(bind=engine)
-    #     app.dependency_overrides[get_db] = override_get_db
+    @classmethod
+    def setUpClass(cls):
+        Base.metadata.create_all(bind=engine)
+        app.dependency_overrides[get_db] = override_get_db
 
     @classmethod
     def tearDownClass(cls):
