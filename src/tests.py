@@ -93,7 +93,7 @@ class TestEnergyAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-WaterConsumption.metadata.drop_all(bind=engine)
+# WaterConsumption.metadata.drop_all(bind=engine)
 
 
 if __name__ == "__main__":
