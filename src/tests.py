@@ -18,8 +18,6 @@ SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/postgres"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    # connect_args={"check_same_thread": False},
-    # poolclass=StaticPool,
 )
 
 Base = declarative_base()
@@ -28,6 +26,8 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 
 WaterConsumption.metadata.create_all(bind=engine)
+print("Created:")
+print(TestingSessionLocal().query(WaterConsumption).all())
 
 
 def override_get_db():
@@ -93,7 +93,9 @@ class TestEnergyAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-# WaterConsumption.metadata.drop_all(bind=engine)
+WaterConsumption.metadata.drop_all(bind=engine)
+print("Dropped")
+print(TestingSessionLocal().query(WaterConsumption).all())
 
 
 if __name__ == "__main__":
