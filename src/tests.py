@@ -50,7 +50,6 @@ class TestEnergyAPI(unittest.TestCase):
 
     def setUp(self):
         self.client = TestClient(app)
-        WaterConsumption.metadata.create_all(bind=engine)
         db = TestingSessionLocal()
         energy = WaterConsumption(
             id=1,
@@ -67,7 +66,6 @@ class TestEnergyAPI(unittest.TestCase):
         db = TestingSessionLocal()
         db.query(WaterConsumption).delete()
         db.commit()
-        WaterConsumption.metadata.drop_all(bind=engine)
         db.close()
 
     def test_get_water_consumption(self):
@@ -96,8 +94,6 @@ class TestEnergyAPI(unittest.TestCase):
 
 
 WaterConsumption.metadata.drop_all(bind=engine)
-print("Dropped")
-print(TestingSessionLocal().query(WaterConsumption).all())
 
 
 if __name__ == "__main__":
